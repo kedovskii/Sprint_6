@@ -58,3 +58,10 @@ class BasePage:
             except ElementClickInterceptedException:
                 # 5) last resort: JS click
                 self._js_click(locator)
+
+    def click_if_present(self, locator) -> bool:
+        try:
+            self.driver.find_element(*locator).click()
+            return True
+        except Exception:
+            return False

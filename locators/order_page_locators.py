@@ -24,12 +24,15 @@ class OrderPageLocators:
     ORDER_BUTTON = (By.XPATH, "//div[contains(@class,'Order_Buttons')]//button[text()='Заказать']")
     CONFIRM_YES_BUTTON = (By.XPATH, "//button[text()='Да']")
 
+    ORDER_BUTTON_TOP = (By.XPATH, "//div[contains(@class,'Header_Nav')]//button[normalize-space()='Заказать']")
+    ORDER_BUTTON_BOTTOM = (By.XPATH,"//div[contains(@class,'Home_FinishButton')]//button[normalize-space()='Заказать']")
+
     # Успех
     SUCCESS_MODAL = (By.CSS_SELECTOR, "div[class*='Order_Modal']")
     SUCCESS_TEXT = (By.XPATH, "//div[contains(@class,'Order_Modal')]//div[contains(@class,'Order_ModalHeader')]")
     SUCCESS_MODAL_TEXT_BLOCK = (By.CSS_SELECTOR, "div[class*='Order_Text']")
 
     ORDER_OVERLAY = (By.CSS_SELECTOR, "div[class*='Order_Overlay']")
-    # CHECK_ORDER_STATUS_MODAL_BUTTON = (By.CSS_SELECTOR,"div[class*='Order_NextButton'] button")
+
     CHECK_ORDER_STATUS_MODAL_BUTTON = (By.XPATH,"//div[contains(@class,'Order_Modal')]//button[normalize-space()='Посмотреть статус']")
     
