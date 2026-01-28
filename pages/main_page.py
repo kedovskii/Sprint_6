@@ -26,7 +26,7 @@ class MainPage(BasePage):
     @allure.step("Open FAQ question #{index}")
     def open_faq_question(self, index: int):
         self.scroll_into_view(MainPageLocators.faq_question(index))
-        self.click(MainPageLocators.faq_question(index))
+        self.safe_click(MainPageLocators.faq_question(index))
 
     @allure.step("Get FAQ answer text for question #{index}")
     def get_faq_answer_text(self, index: int) -> str:
@@ -47,20 +47,22 @@ class MainPage(BasePage):
 
     @allure.step("Assert main page URL equals base_url")
     def assert_current_url_is(self, expected_url: str):
-        assert self.driver.current_url == expected_url, (
-            f"Ожидали URL '{expected_url}', получили '{self.driver.current_url}'"
+        current_url = self.get_current_url()
+        assert current_url == expected_url, (
+            f"Ожидали URL '{expected_url}', получили '{current_url}'"
         )
 
     @allure.step("Click Yandex logo and switch to newly opened tab")
     def click_yandex_logo_and_switch_to_new_tab(self, timeout: int = 10):
-        old_handles = self.driver.window_handles
+        old_handles = self.get_window_handles()
         self.click_yandex_logo()
 
         WebDriverWait(self.driver, timeout).until(
             ec.number_of_windows_to_be(len(old_handles) + 1)
         )
-        new_handle = [h for h in self.driver.window_handles if h not in old_handles][0]
-        self.driver.switch_to.window(new_handle)
+        new_handles = self.get_window_handles()
+        new_handle = [h for h in new_handles if h not in old_handles][0]
+        self.switch_to_window(new_handle)
 
     @allure.step("Wait until current URL contains: {substring}")
     def wait_url_contains(self, substring: str, timeout: int = 10):
@@ -68,6 +70,7 @@ class MainPage(BasePage):
 
     @allure.step("Assert current URL contains: {substring}")
     def assert_current_url_contains(self, substring: str):
-        assert substring in self.driver.current_url, (
-            f"Expected '{substring}' in URL, got '{self.driver.current_url}'"
-    )
+        current_url = self.get_current_url()
+        assert substring in current_url, (
+            f"Expected '{substring}' in URL, got '{current_url}'"
+        )

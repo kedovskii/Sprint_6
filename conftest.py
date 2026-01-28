@@ -3,9 +3,9 @@ import allure
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 
-
 BASE_URL = "https://qa-scooter.praktikum-services.ru/"
 DZEN_URL = "https://dzen.ru/"
+DZEN_DOMAIN = "dzen.ru" 
 
 
 @pytest.fixture(scope="function")
@@ -22,6 +22,16 @@ def driver():
 @pytest.fixture(scope="function")
 def base_url():
     return BASE_URL
+
+
+@pytest.fixture(scope="function")
+def dzen_url():
+    return DZEN_URL
+
+
+@pytest.fixture(scope="function")
+def dzen_domain():
+    return DZEN_DOMAIN
 
 
 # Скриншот в Allure при падении теста

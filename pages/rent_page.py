@@ -37,10 +37,13 @@ class RentPage(BasePage):
     def submit_and_confirm(self):
         self.click(OrderPageLocators.ORDER_BUTTON)
         self.click(OrderPageLocators.CONFIRM_YES_BUTTON)
+        # Ждём, пока модалка подтверждения закроется
+        self.wait.until(ec.invisibility_of_element_located(OrderPageLocators.CONFIRM_YES_BUTTON))
 
     @allure.step("Проверить, что заказ успешно создан (есть модалка)")
     def success_should_be_visible(self) -> str:
-        self.is_visible(OrderPageLocators.SUCCESS_MODAL)
+        # Явное ожидание видимости SUCCESS_MODAL
+        self.wait.until(ec.visibility_of_element_located(OrderPageLocators.SUCCESS_MODAL))
         return self.text_of(OrderPageLocators.SUCCESS_TEXT)
 
     @allure.step("Click 'Check order status' button in success modal")
@@ -69,7 +72,7 @@ class RentPage(BasePage):
         self.wait.until(ec.visibility_of_element_located(OrderPageLocators.SUCCESS_MODAL))
 
         def _has_digits(driver):
-            text = driver.find_element(*OrderPageLocators.SUCCESS_MODAL_TEXT_BLOCK).text
+            text = self.get_element_text(OrderPageLocators.SUCCESS_MODAL_TEXT_BLOCK)
             return any(ch.isdigit() for ch in text)
 
         self.wait.until(_has_digits)

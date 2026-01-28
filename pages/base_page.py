@@ -65,3 +65,19 @@ class BasePage:
             return True
         except Exception:
             return False
+
+    def get_current_url(self) -> str:
+        """Get current page URL"""
+        return self.driver.current_url
+
+    def get_window_handles(self):
+        """Get all window handles"""
+        return self.driver.window_handles
+
+    def switch_to_window(self, window_handle):
+        """Switch to specified window handle"""
+        self.driver.switch_to.window(window_handle)
+
+    def get_element_text(self, locator) -> str:
+        """Get text from element"""
+        return self.find(locator).text
