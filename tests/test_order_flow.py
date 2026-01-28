@@ -1,5 +1,5 @@
 import allure
-from conftest import DZEN_DOMAIN
+from constants import DZEN_DOMAIN
 from pages.main_page import MainPage
 from pages.order_page import OrderPage
 from pages.rent_page import RentPage

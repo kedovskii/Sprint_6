@@ -1,6 +1,5 @@
 import allure
 from selenium.webdriver.support import expected_conditions as ec
-from selenium.webdriver.support.ui import WebDriverWait
 
 from locators.main_page_locators import MainPageLocators
 from pages.base_page import BasePage
@@ -57,16 +56,14 @@ class MainPage(BasePage):
         old_handles = self.get_window_handles()
         self.click_yandex_logo()
 
-        WebDriverWait(self.driver, timeout).until(
-            ec.number_of_windows_to_be(len(old_handles) + 1)
-        )
+        self.wait_for_number_of_windows(len(old_handles) + 1, timeout)
         new_handles = self.get_window_handles()
         new_handle = [h for h in new_handles if h not in old_handles][0]
         self.switch_to_window(new_handle)
 
     @allure.step("Wait until current URL contains: {substring}")
     def wait_url_contains(self, substring: str, timeout: int = 10):
-        WebDriverWait(self.driver, timeout).until(ec.url_contains(substring))
+        super().wait_url_contains(substring, timeout)
 
     @allure.step("Assert current URL contains: {substring}")
     def assert_current_url_contains(self, substring: str):

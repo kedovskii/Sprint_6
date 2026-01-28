@@ -79,5 +79,15 @@ class BasePage:
         self.driver.switch_to.window(window_handle)
 
     def get_element_text(self, locator) -> str:
-        """Get text from element"""
+        """Get text from element without waiting"""
         return self.find(locator).text
+
+    def wait_for_number_of_windows(self, expected_count: int, timeout: int = 10):
+        """Wait until number of windows equals expected_count"""
+        WebDriverWait(self.driver, timeout).until(
+            ec.number_of_windows_to_be(expected_count)
+        )
+
+    def wait_url_contains(self, substring: str, timeout: int = 10):
+        """Wait until current URL contains substring"""
+        WebDriverWait(self.driver, timeout).until(ec.url_contains(substring))

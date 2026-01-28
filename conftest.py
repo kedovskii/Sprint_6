@@ -3,9 +3,7 @@ import allure
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 
-BASE_URL = "https://qa-scooter.praktikum-services.ru/"
-DZEN_URL = "https://dzen.ru/"
-DZEN_DOMAIN = "dzen.ru" 
+from constants import BASE_URL, DZEN_URL, DZEN_DOMAIN, IMPLICIT_WAIT
 
 
 @pytest.fixture(scope="function")
@@ -14,7 +12,7 @@ def driver():
     # options.add_argument("-headless")  # если нужно без UI
     driver = webdriver.Firefox(options=options)
     driver.maximize_window()
-    driver.implicitly_wait(3)
+    driver.implicitly_wait(IMPLICIT_WAIT)
     yield driver
     driver.quit()
 

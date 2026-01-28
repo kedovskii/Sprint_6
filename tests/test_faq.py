@@ -15,7 +15,6 @@ FAQ_CASES = [
     (7, "Да, обязательно. Всем самокатов! И Москве, и Московской области."),
 ]
 
-
 @allure.feature("FAQ")
 class TestFAQ:
     @pytest.mark.parametrize("index, expected", FAQ_CASES)
