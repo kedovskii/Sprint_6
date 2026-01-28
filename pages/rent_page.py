@@ -3,6 +3,7 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.keys import Keys
 from pages.base_page import BasePage
 from locators.order_page_locators import OrderPageLocators
+from pages.order_page import OrderPage
 
 
 class RentPage(BasePage):
@@ -76,3 +77,29 @@ class RentPage(BasePage):
             return any(ch.isdigit() for ch in text)
 
         self.wait.until(_has_digits)
+
+    @allure.step("Заполнить форму заказа полностью и подтвердить")
+    def fill_complete_order(self, data: dict):
+        """
+        Заполнить все поля заказа и нажать "Заказать"
+
+        Args:
+            data: словарь с полями {name, surname, address, metro_query, phone, date, rent_period, comment}
+        """
+        order = OrderPage(self.driver)
+        order.fill_step_one(
+            name=data["name"],
+            surname=data["surname"],
+            address=data["address"],
+            metro_query=data["metro_query"],
+            phone=data["phone"],
+        )
+        order.click_next()
+
+        self.fill_step_two(
+            date_str=data["date"],
+            rent_period_text=data["rent_period"],
+            comment=data["comment"],
+        )
+        self.select_color_black()
+        self.submit_and_confirm()

@@ -3,6 +3,8 @@ from selenium.webdriver.support import expected_conditions as ec
 
 from locators.main_page_locators import MainPageLocators
 from pages.base_page import BasePage
+from pages.order_page import OrderPage
+from pages.rent_page import RentPage
 
 
 class MainPage(BasePage):
@@ -71,3 +73,18 @@ class MainPage(BasePage):
         assert substring in current_url, (
             f"Expected '{substring}' in URL, got '{current_url}'"
         )
+
+    @allure.step("Открыть главную, принять куки и нажать 'Заказать'")
+    def open_and_start_order(self, base_url: str, entry_position: str = "top"):
+        """
+        entry_position: "top" или "bottom"
+        """
+        self.open_main(base_url)
+        self.accept_cookies_if_present()
+        
+        if entry_position == "top":
+            self.click_order_button_top()
+        elif entry_position == "bottom":
+            self.click_order_button_bottom()
+        else:
+            raise ValueError(f"Unknown entry_position: {entry_position}")
