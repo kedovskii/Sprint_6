@@ -67,6 +67,12 @@ class MainPage(BasePage):
     def wait_url_contains(self, substring: str, timeout: int = 10):
         super().wait_url_contains(substring, timeout)
 
+    @allure.step("Проверить, что текущий URL содержит: {substring}")
+    def assert_url_contains(self, substring: str) -> bool:
+        """Проверяет, что текущий URL содержит substring. Возвращает True если содержит."""
+        current_url = self.get_current_url()
+        return substring in current_url
+
     @allure.step("Assert current URL contains: {substring}")
     def assert_current_url_contains(self, substring: str):
         current_url = self.get_current_url()

@@ -29,6 +29,7 @@ class TestOrderFlow:
 
         rent.click_check_order_status_modal_button()
         rent.wait_overlay_to_disappear()
+        assert rent.is_overlay_closed()
 
     @allure.title("Логотип Самоката ведет на главную (top entry)")
     def test_scooter_logo_returns_to_main_top(self, driver, base_url):
@@ -58,6 +59,8 @@ class TestOrderFlow:
         main.wait_main_page_loaded()
         main.click_yandex_logo_and_switch_to_new_tab()
         main.wait_url_contains(DZEN_DOMAIN)
+        
+        assert main.assert_url_contains(DZEN_DOMAIN), f"URL не содержит '{DZEN_DOMAIN}'"
 
     @allure.title("Появляется подтверждение оформления заказа (bottom entry)")
     def test_order_success_modal_text_bottom(self, driver, base_url):
@@ -80,6 +83,7 @@ class TestOrderFlow:
 
         rent.click_check_order_status_modal_button()
         rent.wait_overlay_to_disappear()
+        assert rent.is_overlay_closed()
 
     @allure.title("Логотип Самоката ведет на главную (bottom entry)")
     def test_scooter_logo_returns_to_main_bottom(self, driver, base_url):
@@ -109,3 +113,5 @@ class TestOrderFlow:
         main.wait_main_page_loaded()
         main.click_yandex_logo_and_switch_to_new_tab()
         main.wait_url_contains(DZEN_DOMAIN)
+        
+        assert main.assert_url_contains(DZEN_DOMAIN), f"URL не содержит '{DZEN_DOMAIN}'"
