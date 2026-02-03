@@ -1,6 +1,7 @@
 import allure
 import pytest
 
+from constants import BASE_URL
 from pages.main_page import MainPage
 
 
@@ -19,9 +20,9 @@ FAQ_CASES = [
 class TestFAQ:
     @pytest.mark.parametrize("index, expected", FAQ_CASES)
     @allure.title("FAQ: when clicking on question #{index}, the correct answer is displayed")
-    def test_faq_answer_opens(self, driver, base_url, index, expected):
+    def test_faq_answer_opens(self, driver, index, expected):
         main_page = MainPage(driver)
-        main_page.open_main(base_url)
+        main_page.open_main(BASE_URL)
         main_page.accept_cookies_if_present()
 
         main_page.open_faq_question(index)

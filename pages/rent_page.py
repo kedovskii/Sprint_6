@@ -57,6 +57,7 @@ class RentPage(BasePage):
     @allure.step("Wait overlay to disappear")
     def wait_overlay_to_disappear(self):
         self.wait.until(ec.invisibility_of_element_located(OrderPageLocators.ORDER_OVERLAY))
+        return True
 
     @allure.step("Wait until success modal text contains order number")
     def wait_until_order_number_text_present(self):
@@ -90,12 +91,6 @@ class RentPage(BasePage):
 
     @allure.step("Заполнить форму заказа полностью и подтвердить")
     def fill_complete_order(self, data: dict):
-        """
-        Заполнить все поля заказа и нажать "Заказать"
-
-        Args:
-            data: словарь с полями {name, surname, address, metro_query, phone, date, rent_period, comment}
-        """
         order = OrderPage(self.driver)
         order.fill_step_one(
             name=data["name"],

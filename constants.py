@@ -7,5 +7,4 @@ DZEN_DOMAIN = "dzen.ru"
 DEFAULT_TIMEOUT = 10
 IMPLICIT_WAIT = 3
 
-# Другие константы (при необходимости)
 BROWSER = "firefox"
