@@ -51,8 +51,6 @@ class RentPage(BasePage):
     def click_check_order_status_modal_button(self):
         self.wait.until(ec.visibility_of_element_located(OrderPageLocators.SUCCESS_MODAL))
         self.safe_click(OrderPageLocators.CHECK_ORDER_STATUS_MODAL_BUTTON)
-        self.wait.until(ec.invisibility_of_element_located(OrderPageLocators.ORDER_OVERLAY))
-        self.wait.until(ec.invisibility_of_element_located(OrderPageLocators.SUCCESS_MODAL))
 
     @allure.step("Wait overlay to disappear")
     def wait_overlay_to_disappear(self):
@@ -81,12 +79,8 @@ class RentPage(BasePage):
     @allure.step("Проверить, что overlay закрыт")
     def is_overlay_closed(self) -> bool:
         """Проверяет, что overlay скрыт. Возвращает True если скрыт."""
-        try:
-            # Если элемент не видим, это хорошо
-            self.wait.until(ec.invisibility_of_element_located(OrderPageLocators.ORDER_OVERLAY))
-            return True
-        except Exception:
-            return False
+        self.wait.until(ec.invisibility_of_element_located(OrderPageLocators.ORDER_OVERLAY))
+        return True
 
     @allure.step("Заполнить форму заказа полностью и подтвердить")
     def fill_complete_order(self, data: dict):

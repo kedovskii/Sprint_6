@@ -17,21 +17,6 @@ def driver():
     driver.quit()
 
 
-@pytest.fixture(scope="function")
-def base_url():
-    return BASE_URL
-
-
-@pytest.fixture(scope="function")
-def dzen_url():
-    return DZEN_URL
-
-
-@pytest.fixture(scope="function")
-def dzen_domain():
-    return DZEN_DOMAIN
-
-
 # Скриншот в Allure при падении теста
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
