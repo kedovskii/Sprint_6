@@ -1,0 +1,93 @@
+from selenium.common.exceptions import ElementClickInterceptedException
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.support.ui import WebDriverWait
+
+
+class BasePage:
+    def __init__(self, driver, timeout: int = 10):
+        self.driver = driver
+        self.wait = WebDriverWait(driver, timeout)
+
+    def open(self, url: str):
+        self.driver.get(url)
+
+    def find(self, locator):
+        return self.driver.find_element(*locator)
+
+    def click(self, locator):
+        self.wait.until(ec.element_to_be_clickable(locator)).click()
+
+    def type(self, locator, text: str, clear: bool = True):
+        el = self.wait.until(ec.visibility_of_element_located(locator))
+        if clear:
+            el.clear()
+        el.send_keys(text)
+
+    def text_of(self, locator) -> str:
+        el = self.wait.until(ec.visibility_of_element_located(locator))
+        return el.text
+
+    def is_visible(self, locator) -> bool:
+        self.wait.until(ec.visibility_of_element_located(locator))
+        return True
+
+    def scroll_into_view(self, locator):
+        el = self.find(locator)
+        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", el)
+        return el
+
+    def _js_click(self, locator):
+        el = self.find(locator)
+        self.driver.execute_script("arguments[0].click();", el)
+
+    def safe_click(self, locator):
+        # 1) wait for presence
+        self.wait.until(ec.presence_of_element_located(locator))
+        # 2) scroll into view
+        self.scroll_into_view(locator)
+
+        try:
+            # 3) normal click
+            self.wait.until(ec.element_to_be_clickable(locator)).click()
+        except ElementClickInterceptedException:
+            # 4) ActionChains click
+            el = self.find(locator)
+            try:
+                ActionChains(self.driver).move_to_element(el).click(el).perform()
+            except ElementClickInterceptedException:
+                # 5) last resort: JS click
+                self._js_click(locator)
+
+    def click_if_present(self, locator) -> bool:
+        try:
+            self.driver.find_element(*locator).click()
+            return True
+        except Exception:
+            return False
+
+    def get_current_url(self) -> str:
+        """Get current page URL"""
+        return self.driver.current_url
+
+    def get_window_handles(self):
+        """Get all window handles"""
+        return self.driver.window_handles
+
+    def switch_to_window(self, window_handle):
+        """Switch to specified window handle"""
+        self.driver.switch_to.window(window_handle)
+
+    def get_element_text(self, locator) -> str:
+        """Get text from element without waiting"""
+        return self.find(locator).text
+
+    def wait_for_number_of_windows(self, expected_count: int, timeout: int = 10):
+        """Wait until number of windows equals expected_count"""
+        WebDriverWait(self.driver, timeout).until(
+            ec.number_of_windows_to_be(expected_count)
+        )
+
+    def wait_url_contains(self, substring: str, timeout: int = 10):
+        """Wait until current URL contains substring"""
+        WebDriverWait(self.driver, timeout).until(ec.url_contains(substring))
