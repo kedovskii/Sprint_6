@@ -28,7 +28,7 @@ class TestOrderFlow:
         rent.fill_complete_order(DATA_TOP)
 
         rent.click_check_order_status_modal_button()
-        rent.is_overlay_closed()
+        rent.wait_for_overlay_to_close()
 
     @allure.title("Логотип Самоката ведет на главную (top entry)")
     def test_scooter_logo_returns_to_main_top(self, driver):
@@ -77,7 +77,7 @@ class TestOrderFlow:
         rent.fill_complete_order(DATA_BOTTOM)
 
         rent.click_check_order_status_modal_button()
-        rent.is_overlay_closed()
+        rent.wait_for_overlay_to_close()
 
     @allure.title("Логотип Самоката ведет на главную (bottom entry)")
     def test_scooter_logo_returns_to_main_bottom(self, driver):
