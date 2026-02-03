@@ -77,10 +77,9 @@ class RentPage(BasePage):
         self.wait.until(_has_digits)
 
     @allure.step("Проверить, что overlay закрыт")
-    def is_overlay_closed(self) -> bool:
-        """Проверяет, что overlay скрыт. Возвращает True если скрыт."""
+    def is_overlay_closed(self):
+        """Проверяет, что overlay скрыт. Выбросит исключение если не скрыт в течение таймаута."""
         self.wait.until(ec.invisibility_of_element_located(OrderPageLocators.ORDER_OVERLAY))
-        return True
 
     @allure.step("Заполнить форму заказа полностью и подтвердить")
     def fill_complete_order(self, data: dict):
